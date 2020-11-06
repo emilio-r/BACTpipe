@@ -146,7 +146,6 @@ process screen_for_contaminants {
 
     output:
     file("${pair_id}.sendsketch.txt")
-    stdout into gramstain_result
 
     script:
     """
@@ -154,10 +153,6 @@ process screen_for_contaminants {
         in=${pair_id}.contigs.fa \
         samplerate=0.1 \
         out=${pair_id}.sendsketch.txt \
-
-    python3 "$projectDir/bin/sendsketch_stainer.py" \
-        ${pair_id}.sendsketch.txt \
-        "$projectDir/resources/gram_stain.txt"
     """
 }
 
@@ -188,6 +183,7 @@ process prokka {
         --locustag ${pair_id} \
         --outdir ${pair_id}_prokka \
         --prefix ${pair_id} \
+        --gram neg \
 	--compliant \
         ${prokka_reference_argument} \
         ${pair_id}.contigs.fa
